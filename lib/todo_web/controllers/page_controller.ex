@@ -3,7 +3,7 @@ defmodule TodoWeb.PageController do
 
   def index(conn, _params) do
     conn
-    |> put_layout("admin.html")
-    |> render("index.html")
+    |> put_resp_content_type("text/plain")
+    |> send_resp(201, "")
   end
 end
