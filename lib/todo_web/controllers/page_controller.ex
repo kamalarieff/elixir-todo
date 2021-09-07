@@ -2,6 +2,8 @@ defmodule TodoWeb.PageController do
   use TodoWeb, :controller
 
   def index(conn, _params) do
-    render(conn, "index.html")
+    pages = [%{title: "foo"}, %{title: "bar"}]
+
+    render(conn, "index.json", pages: pages)
   end
 end
