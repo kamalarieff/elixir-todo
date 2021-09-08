@@ -25,6 +25,11 @@ defmodule TodoWeb.Router do
     resources "/sessions", SessionController, only: [:new, :create, :delete], singleton: true
   end
 
+  scope "/cms", TodoWeb.CMS, as: :cms do
+    pipe_through [:browser, :authenticate_user]
+
+    resources "/pages", PageController
+  end
 
   defp authenticate_user(conn, _) do
     case get_session(conn, :user_id) do
@@ -37,6 +42,7 @@ defmodule TodoWeb.Router do
         assign(conn, :current_user, Todo.Accounts.get_user!(user_id))
     end
   end
+
   # Other scopes may use custom stacks.
   # scope "/api", TodoWeb do
   #   pipe_through :api
