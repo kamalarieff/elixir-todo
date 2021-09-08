@@ -8,7 +8,7 @@ defmodule Todo.Accounts do
   import Ecto.Query, warn: false
   alias Todo.Repo
 
-  alias Todo.Accounts.User
+  alias Todo.Accounts.{User, Credential}
 
   @doc """
   Returns the list of users.
@@ -20,7 +20,9 @@ defmodule Todo.Accounts do
 
   """
   def list_users do
-    Repo.all(User)
+    User
+    |> Repo.all()
+    |> Repo.preload(:credential)
   end
 
   @doc """
@@ -37,7 +39,11 @@ defmodule Todo.Accounts do
       ** (Ecto.NoResultsError)
 
   """
-  def get_user!(id), do: Repo.get!(User, id)
+  def get_user!(id) do
+    User
+    |> Repo.get!(id)
+    |> Repo.preload(:credential)
+  end 
 
   @doc """
   Creates a user.
@@ -54,6 +60,7 @@ defmodule Todo.Accounts do
   def create_user(attrs \\ %{}) do
     %User{}
     |> User.changeset(attrs)
+    |> Ecto.Changeset.cast_assoc(:credential, with: &Credential.changeset/2)
     |> Repo.insert()
   end
 
@@ -72,6 +79,7 @@ defmodule Todo.Accounts do
   def update_user(%User{} = user, attrs) do
     user
     |> User.changeset(attrs)
+    |> Ecto.Changeset.cast_assoc(:credential, with: &Credential.changeset/2)
     |> Repo.update()
   end
 
@@ -102,5 +110,99 @@ defmodule Todo.Accounts do
   """
   def change_user(%User{} = user, attrs \\ %{}) do
     User.changeset(user, attrs)
+  end
+
+  @doc """
+  Returns the list of credentials.
+
+  ## Examples
+
+      iex> list_credentials()
+      [%Credential{}, ...]
+
+  """
+  def list_credentials do
+    Repo.all(Credential)
+  end
+
+  @doc """
+  Gets a single credential.
+
+  Raises `Ecto.NoResultsError` if the Credential does not exist.
+
+  ## Examples
+
+      iex> get_credential!(123)
+      %Credential{}
+
+      iex> get_credential!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_credential!(id), do: Repo.get!(Credential, id)
+
+  @doc """
+  Creates a credential.
+
+  ## Examples
+
+      iex> create_credential(%{field: value})
+      {:ok, %Credential{}}
+
+      iex> create_credential(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_credential(attrs \\ %{}) do
+    %Credential{}
+    |> Credential.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a credential.
+
+  ## Examples
+
+      iex> update_credential(credential, %{field: new_value})
+      {:ok, %Credential{}}
+
+      iex> update_credential(credential, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_credential(%Credential{} = credential, attrs) do
+    credential
+    |> Credential.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a credential.
+
+  ## Examples
+
+      iex> delete_credential(credential)
+      {:ok, %Credential{}}
+
+      iex> delete_credential(credential)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_credential(%Credential{} = credential) do
+    Repo.delete(credential)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking credential changes.
+
+  ## Examples
+
+      iex> change_credential(credential)
+      %Ecto.Changeset{data: %Credential{}}
+
+  """
+  def change_credential(%Credential{} = credential, attrs \\ %{}) do
+    Credential.changeset(credential, attrs)
   end
 end
