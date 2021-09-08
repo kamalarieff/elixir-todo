@@ -2,7 +2,7 @@ defmodule TodoWeb.Router do
   use TodoWeb, :router
 
   pipeline :browser do
-    plug :accepts, ["html"]
+    plug :accepts, ["html", "text"]
     plug :fetch_session
     plug :fetch_flash
     plug :protect_from_forgery
@@ -21,6 +21,7 @@ defmodule TodoWeb.Router do
     post "/items", ItemsController, :create
     patch "/items/:id/complete", ItemsController, :complete
     delete "/items/:id", ItemsController, :delete
+    resources "/users", UserController
   end
 
   # Other scopes may use custom stacks.
