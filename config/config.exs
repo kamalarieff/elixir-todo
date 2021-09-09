@@ -29,6 +29,9 @@ config :phoenix, :json_library, Jason
 # You can disable logging via this line
 # config :phoenix, :logger, false
 
+# You can filter out params to not show in the logs
+# config :phoenix, :filter_parameters, ["email"]
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"
