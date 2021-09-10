@@ -17,7 +17,8 @@ defmodule Todo.Application do
       TodoWeb.Endpoint,
       # Start a worker by calling: Todo.Worker.start_link(arg)
       # {Todo.Worker, arg}
-      {Todo.MyServer, fn -> "Hello, world!" end}
+      {Todo.MyServer, fn -> "Hello, world!" end},
+      TodoWeb.Presence
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
