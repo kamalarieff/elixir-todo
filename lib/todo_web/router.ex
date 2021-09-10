@@ -23,6 +23,7 @@ defmodule TodoWeb.Router do
     delete "/items/:id", ItemsController, :delete
     resources "/users", UserController
     resources "/sessions", SessionController, only: [:new, :create, :delete], singleton: true
+    resources "/posts", PostController
   end
 
   scope "/cms", TodoWeb.CMS, as: :cms do
