@@ -39,15 +39,18 @@ defmodule TodoWeb.Router do
         |> Phoenix.Controller.put_flash(:error, "Login required")
         |> Phoenix.Controller.redirect(to: "/")
         |> halt()
+
       user_id ->
         assign(conn, :current_user, Todo.Accounts.get_user!(user_id))
     end
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", TodoWeb do
-  #   pipe_through :api
-  # end
+  scope "/api", TodoWeb do
+    pipe_through :api
+
+    resources "/articles", ArticleController, except: [:new, :edit]
+  end
 
   # Enables LiveDashboard only for development
   #
